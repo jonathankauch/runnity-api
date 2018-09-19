@@ -1,0 +1,39 @@
+<% groups.each do |group| %>
+<div class="col-md-4" style="margin-bottom: 10px">
+<div class="col-md-12" style="background-color:white; padding:2em;">
+  <div class="tile-container">
+    <div class="tile-thumbnail">
+      <a href="javascript:;">
+        <%= image_tag 'group_default.jpg', width: "100%", height: "auto" %>
+      </a>
+    </div>
+    <div class="tile-title text-center">
+      <h3>
+        <%= link_to  group  do %>
+        <%= truncate( group.name, length: 20) %>
+        <% end %>
+      </h3>
+      <div style="margin-bottom: 2px; text-align:center;">
+        <%= group.private_status ? '<span class="label label-sm label-warning">PRIVEE</span>'.html_safe : '<span class="label label-sm label-success">PUBLIC</span>'.html_safe %></span>
+      </div>
+      <div style="margin-bottom: 2px; text-align:center;">
+        <span class="label label-sm label-info">Crée par : <%= group.user.fullname %></span>
+      </div>
+      <hr />
+      <div class="tile-desc">
+        <%= link_to group  do %>
+        <button class="btn btn-default">Détails</button>
+        <% end %>
+        <% if !current_user.requested_groups.include?(group.id) %>
+        <%= link_to '<button class="btn btn-success">Rejoindre</button>'.html_safe,
+        member_requests_path(group_id: group.id), :remote => true, :method => :post %>
+        <% else %>
+        <%= link_to '<button class="btn btn-danger">Annuler</button>'.html_safe,
+        member_request_path(id: group.find_member_request(current_user.id)), :remote => true, :method => :delete %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<% end %>

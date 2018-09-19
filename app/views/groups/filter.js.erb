@@ -1,0 +1,4 @@
+
+$('#suggest-groups').empty();
+
+$('#suggest-groups').html("<%= escape_javascript (render 'groups/groups', :groups => @groups) %>");

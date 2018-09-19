@@ -1,0 +1,24 @@
+<% if @member_invitation or @invitation %>
+  <% if @member_invitation %>
+      swal("", "Votre invitation a été envoyée", "success").then((value) => {
+        location.reload();
+      });
+  <% elsif @invitation %>
+      swal("", "Votre demande a été envoyé à l'administrateur", "success").then((value) => {
+        location.reload();
+      });
+  <% elsif @invitation.nil? %>
+      swal("", "Votre demande a échoué, veuillez réessayer ultérieurement", "error").then((value) => {
+        location.reload();
+      });
+  <% elsif @member_invitation.nil? %>
+      swal("", "Votre invitation a échoué, veuillez réessayer ultérieurement", "error").then((value) => {
+        location.reload();
+      });
+  <% end %>
+<% end %>
+<% if @user_empty %>
+  swal("", "L'utilisateur que vous essayez d'inviter n'existe pas.", "error").then((value) => {
+    location.reload();
+  });
+<% end %>

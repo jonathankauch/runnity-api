@@ -1,0 +1,42 @@
+<%= form_for(achievement) do |f| %>
+  <% if achievement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% achievement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "Description de l'objectif" %>
+    <%= f.text_area :content, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Type de l'objectif" %>
+    <%= f.select(:achievement_type, options_for_select([['Poids', 'WEIGHT'], ['Temps', 'TIME'], ['Kilometre', 'KILOMETER']]), :class => 'form-control') %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Valeur a atteindre" %>
+    <%= f.number_field :value, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Date de début d'objectif" %> <br />
+    <%= f.date_select(:start_date, selected: Date.today, min: Date.today, max: 1.months.from_now, with_css_classes: 'form-control') %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Date de fin d'objectif" %> <br />
+    <%= f.date_select(:due_date, default: 1.days.from_now, min: 1.days.from_now, max: 1.years.from_now, with_css_classes: 'form-control') %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Enregistrer", class: "btn main-input-post green"%>
+  </div>
+<% end %>

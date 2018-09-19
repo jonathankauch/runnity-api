@@ -1,0 +1,74 @@
+<%= render 'layouts/main_css' %>
+
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <!-- BEGIN PAGE TITLE -->
+    <div class="page-title">
+        <h1>Classement
+        </h1>
+    </div>
+    <!-- END PAGE TITLE -->
+</div>
+<!-- END PAGE HEAD-->
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-title">
+          <div class="caption">
+              <i class="fa fa-area-chart font-green" style="font-size: 20px;"></i>
+              <span class="caption-subject bold font-green uppercase">
+                <% if @filter == 'calorie' %>
+                  Caloris brûler
+                <% elsif @filter == 'kilometer' %>
+                  Kilomètres parcourus
+                <% else %>
+                  Vitesse moyenne
+                <% end %>
+              </span>
+          </div>
+      </div>
+      <div class="portlet-body">
+        <div class="margin-bottom-15">
+          <p>Filtre :</p>
+          <% if @filter == 'calorie' %>
+            <a href="/ranking?filter=speed"><button class="btn green btn-outline">Vitesse moyenne</button></a>
+            <button class="btn green">Calorie brûler</button>
+            <a href="/ranking?filter=kilometer"><button class="btn green btn-outline">Kilomètres parcourus</button></a>
+          <% elsif @filter == 'kilometer' %>
+            <a href="/ranking?filter=speed"><button class="btn green btn-outline">Vitesse moyenne</button></a>
+            <a href="/ranking?filter=calorie"><button class="btn green btn-outline">Calorie brûler</button></a>
+            <button class="btn green">Kilomètres parcourus</button>
+          <% else %>
+            <button class="btn green">Vitesse moyenne</button>
+            <a href="/ranking?filter=calorie"><button class="btn green btn-outline">Calorie brûler</button></a>
+            <a href="/ranking?filter=kilometer"><button class="btn green btn-outline">Kilomètres parcourus</button></a>
+          <% end %>
+        </div>
+        <table class="table table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content">
+              <tr>
+                <th>Nom</th>
+                <th>Vitesse moyenne</th>
+                <th>Calorie brûler</th>
+                <th>Kilomètres parcourus</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= user.fullname %></td>
+                <td><%= user.average_speed %></td>
+                <td><%= user.total_calorie %></td>
+                <td><%= user.kilometer_done %></td>
+                <td><a href="/users/<%= user.id %>">Voir le profil</a></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,216 @@
+<%= render 'layouts/main_css' %>
+
+<!-- BEGIN PAGE TITLE -->
+<div class="page-head">
+  <div class="page-title">
+      <h1>Trouvez un partenaire
+      </h1>
+  </div>
+</div>
+<!-- END PAGE TITLE -->
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-title">
+          <div class="caption">
+              <i class="fa fa-filter font-green" style="font-size: 20px;"></i>
+              <span class="caption-subject bold font-green uppercase">Filtre de recherche</span>
+          </div>
+      </div>
+      <div class="portlet-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <span>Ville :</span>
+              <input id="city-filter" type="text" class=" margin-top-15 form-control" placeholder="Paris" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <span>Périmètre de recherche :</span>
+              <div id="slidecontainer" class="text-center">
+                <input type="range" min="1" max="25" value="5" class="slider" id="myRange">
+                <span id="demo">5 kilomètres</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <span>Niveau du partenaire (En km/h):</span><br />
+              <select id="partner-level-filter" class="margin-top-15 form-control">
+                <option value="0">Tout niveau</option>
+                <option value="6">4-6</option>
+                <option value="7">5-7</option>
+                <option value="10">8-10</option>
+                <option value="12">10-12</option>
+                <option value="13">12+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <hr />
+          <div class="col-md-12 text-left">
+            <button id="filter-btn" class="btn btn-success">Filtrer</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-title">
+          <div class="caption">
+              <i class="fa fa-map-o font-green" style="font-size: 20px;"></i>
+              <span class="caption-subject bold font-green uppercase">Carte</span>
+          </div>
+      </div>
+      <div class="portlet-body">
+        <div class="map-container">
+          <div id='map' style="height: 800px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP BOX -->
+<% content_for :javascript_head do %>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+<% end %>
+
+<% content_for :javascript do %>
+  <script>
+    var distanceFilter = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = distanceFilter.value + ' kilomètres'; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    distanceFilter.oninput = function() {
+        output.innerHTML = this.value + ' kilomètres';
+    }
+
+    $('#filter-btn').click(function() {
+      $.ajax({
+        url: '/fetch_partner',
+        type: 'POST',
+        data: {
+          partner: {
+            city: $('#city-filter').val() || "Paris",
+            range: $('#myRange').val(),
+            level: $('#partner-level-filter').find(':selected').val()
+          }
+        },
+        success: function(data) {
+          console.log(data);
+          var users = data.users;
+          for (var i = 0; i < users.length; i++) {
+            if (users[i]['latitude'] != '' && users[i]['latitude'] != null &&
+                users[i]['latitude'] != undefined) {
+              var obj = {
+                coord: [users[i]['longitude'], users[i]['latitude']],
+                avatar: users[i]['avatar'],
+                name: users[i]['firstname'] + " " + users[i]['lastname'],
+                email: users[i]['email'],
+                id: users[i]['id'],
+              };
+
+              geojson["features"].push(make_feature(obj));
+            }
+          }
+          console.log(geojson);
+          add_markers();
+          console.log(data.center);
+          if (data.users.length != 0) {
+            map.flyTo({
+              center: data.center.reverse(),
+              zoom: data.zoom
+            });
+          }
+        },
+        error: function(err) {
+           console.log('err', err)
+        }
+      });
+    });
+
+
+    // -------- MAPBOX --------
+
+    var geojson = {
+      "type": "FeatureCollection",
+      "features": []
+    }
+
+    var make_feature = function(data) {
+      var obj = {
+        "type": "Feature",
+        "properties": {
+          "iconSize": [45, 45],
+          "avatar": data['avatar'],
+          "name": data['name'],
+          "email": data['email'],
+          "id": data['id'],
+        },
+          "geometry": {
+            "type": "Point",
+            "coordinates": data['coord']
+        }
+      }
+      return obj;
+    }
+
+    // add markers to map
+    function add_markers() {
+      geojson.features.forEach(function(marker) {
+          // create a DOM element for the marker
+          var el = document.createElement('div');
+          el.className = 'marker';
+          el.style.backgroundImage = 'url(' + marker.properties.avatar + ')';
+          el.style.width = marker.properties.iconSize[0] + 'px';
+          el.style.height = marker.properties.iconSize[1] + 'px';
+          el.style.backgroundSize = 'cover';
+          el.style.borderRadius = '50px';
+
+          // add marker to map
+          new mapboxgl.Marker(el)
+              .setLngLat(marker.geometry.coordinates)
+              .setPopup(new mapboxgl.Popup({ offset: [25, -10] }) // add popups
+              .setHTML('<h4><a href="/users/' + marker.properties.id + '">' + marker.properties.name + '</a></h4><p>' + marker.properties.email + '</p>'))
+              .addTo(map);
+      });
+    }
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9ucXVhY2giLCJhIjoiY2l5eDY5b29hMDA0NjJ3bGV4bzFrMW44OSJ9.D_SMbkoqc7wofC7cEVL8jA';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/jonquach/ciz96k5qw004s2so5j7fje47d'
+    });
+
+    try {
+      map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new mapboxgl.GeolocateControl());
+      map.addControl(new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken
+      }));
+      map.on('result', function(ev) {
+          map.getSource('single-point').setData(ev.result.geometry);
+      });
+
+    } catch(e) {
+      console.log('Run is not parsable ->', e);
+    }
+  </script>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' type='text/css' />
+<% end %>

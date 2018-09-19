@@ -1,0 +1,10 @@
+
+<% if !@error %>
+  swal("", "Vous avez accepté cette demande d'adhésion", "success").then((value) => {
+    location.reload();
+  });
+<% else %>
+  swal("", 'Votre demande a échoué, veuillez réessayer ultérieurement.', "error").then((value) => {
+    location.reload();
+  });
+<% end %>

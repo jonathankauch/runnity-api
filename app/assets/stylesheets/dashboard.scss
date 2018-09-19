@@ -1,0 +1,47 @@
+// Place all the styles related to the Dashboard controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.block-graph {
+  margin-top: 25px;
+  span {
+    font-size: 20px;
+  }
+  .nb-course-total {
+    font-size: 20px;
+    color: rgba(255, 99, 132, 0.5);
+  }
+  .nb-step-total {
+    font-size: 20px;
+    color: rgba(54, 162, 235, 0.5);
+  }
+  .nb-kilometre-total {
+    font-size: 20px;
+    color: rgba(153, 102, 255, 0.5);
+  }
+  .light-orange {
+    font-size: 20px;
+    color: rgba(255, 206, 86, 0.2);
+  }
+  .dark-red{
+    color: rgba(255, 99, 132, 0.8);
+  }
+  canvas {
+    background: #FFF;
+  }
+}
+.block-nb-stats {
+  padding: 2px;
+  div {
+    padding: 5px;
+    background-color: #FFF;
+  }
+}
+.block-nb-stats:first-child {
+  padding-left: 15px;
+  padding-right: 2px;
+}
+.block-nb-stats:last-child {
+  padding-left: 2px;
+  padding-right: 15px;
+}

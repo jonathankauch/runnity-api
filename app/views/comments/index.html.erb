@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Commentaire</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Poste</th>
+      <th>Contenu</th>
+      <th>Image</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr>
+        <td><%= comment.post_id %></td>
+        <td><%= comment.content %></td>
+        <td><%= comment.picture %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

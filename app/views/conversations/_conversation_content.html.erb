@@ -1,0 +1,5 @@
+<ul class="chats">
+<% messages.each do |message| %>
+  <%= render message, user: user %>
+<% end %>
+</ul>

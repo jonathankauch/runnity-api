@@ -1,0 +1,23 @@
+<%= form_for(member_request, :remote => true, :method => :post) do |f| %>
+  <% if member_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(member_request.errors.count, "error") %> prohibited this group from being saved:</h2>
+
+      <ul>
+      <% member_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" class='form-control' name="email" %>
+    </div>
+    <%= f.hidden_field :requests_id, value: request.id %>
+    <%= f.hidden_field :requests_type, value: type %>
+    <%= f.hidden_field :member_invitation, value: true %>
+  <div class="form-submit">
+    <%= f.submit 'Inviter', {:class => "btn btn-success" } %>
+  </div>
+<% end %>

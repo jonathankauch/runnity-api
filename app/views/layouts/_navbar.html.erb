@@ -1,0 +1,184 @@
+<div class="page-header navbar navbar-fixed-top">
+
+  <!-- BEGIN HEADER INNER -->
+  <div class="page-header-inner container">
+      <!-- BEGIN LOGO -->
+      <div class="page-logo">
+      <%= link_to root_path do %><%= image_tag("logoRunit.png", :alt => "logo", :class => "logo-default") %><%end %>
+      <div class="menu-toggler sidebar-toggler">
+          <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+      </div>
+      </div><!-- END LOGO -->
+      <%= link_to find_partner_path do %>
+        <button class="find-partner-btn btn btn-success">+ Trouvez des partenaires</button>
+      <% end %>
+      <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+      <a class="menu-toggler responsive-toggler" data-target=".navbar-collapse" data-toggle="collapse" href="javascript:;"></a> <!-- END RESPONSIVE MENU TOGGLER -->
+      <!-- BEGIN PAGE ACTIONS -->
+      <!-- DOC: Remove "hide" class to enable the page header actions -->
+      <!-- BEGIN PAGE TOP -->
+      <div class="page-top">
+      <!-- BEGIN HEADER SEARCH BOX -->
+      <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
+      <!-- BEGIN TOP NAVIGATION MENU -->
+      <div class="top-menu">
+        <ul class="nav navbar-nav pull-right">
+          <li class="separator hide"></li><!-- BEGIN NOTIFICATION DROPDOWN -->
+          <li class="dropdown dropdown-extended dropdown-notification dropdown" id="header_notification_bar">
+            <a class="dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" href="javascript:;"><i class="fa fa-user-o"></i> <span class="badge badge-success"><%= current_user.notifications_count %></span></a>
+            <ul class="dropdown-menu" style="max-height: 500px; overflow:scroll;">
+                <li class="external">
+                  <h3><span class="bold"><%= current_user.notifications_count %> en attente</span> notifications</h3>
+                </li>
+                <li class="mt-actions">
+                  <% current_user.groups_notifications.each do |notification| %>
+                      <div class="mt-action-body">
+                        <% if notification.status == "pending" %>
+                          <% if notification.group_request and notification.id %>
+                            <b><%= User.find(notification.applicant).try(:fullname) %></b> aimerait rejoindre votre groupe : <b><%= notification.group_name %></b><br/>
+                            <div class="notifs-actions">
+                              <%= link_to accept_member_request_path(:id => notification.group_request, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline green btn-sm" type="button">Accepter</button><% end %>
+                              <%= link_to reject_member_request_path(:id => notification.group_request, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline red btn-sm" type="button">Refuser</button><% end %>
+                            </div>
+                          <% end %>
+                        <% elsif notification.status == "invitation" %>
+                          <% if notification.group_invitation and notification.id %>
+                            <b><%= User.find(notification.applicant).try(:fullname) %></b> vous a invité a rejoindre le groupe : <b><%= notification.group_name %> <b><br/>
+                            <div class="notifs-actions">
+                              <%= link_to accept_member_request_path(:id => notification.group_invitation, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline green btn-sm" type="button">Accepter</button><% end %>
+                              <%= link_to reject_member_request_path(:id => notification.group_invitation, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline red btn-sm" type="button">Refuser</button><% end %>
+                            </div>
+                          <% end %>
+                        <% end %>
+                      </div>
+                  <% end %>
+                </li>
+                <li class="mt-actions">
+                  <% current_user.events_notifications.each do |notification| %>
+                      <div class="mt-action-body">
+                        <% if notification.status == "pending" %>
+                          <% if notification.event_request and notification.id %>
+                            <b><%= User.find(notification.applicant).try(:fullname) %></b> aimerait rejoindre votre event : <b><%= notification.event_name %></b><br/>
+                            <div class="notifs-actions">
+                                <%= link_to accept_member_request_path(:id => notification.event_request, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline green btn-sm" type="button">Accepter</button><% end %>
+                                <%= link_to reject_member_request_path(:id => notification.event_request, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline red btn-sm" type="button">Refuser</button><% end %>
+                            </div>
+                          <% end %>
+                        <% elsif notification.status == "invitation" %>
+                          <% if notification.event_invitation and notification.id %>
+                            <b><%= User.find(notification.applicant).try(:fullname) %></b> vous a invité a rejoindre le event : <b><%= notification.event_name %> <b><br/>
+                            <div class="notifs-actions">
+                              <%= link_to accept_member_request_path(:id => notification.event_invitation, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline green btn-sm" type="button">Accepter</button><% end %>
+                              <%= link_to reject_member_request_path(:id => notification.event_invitation, :notification => notification.id), :method => :post, :remote => true do %><button class="btn btn-outline red btn-sm" type="button">Refuser</button><% end %>
+                            </div>
+                          <% end %>
+                        <% end %>
+                      </div>
+                  <% end %>
+                </li>
+                <li class="mt-actions">
+                  <% current_user.friends_notifications.each do |notification| %>
+                      <div class="mt-action-body">
+                        <% if notification.status == "requested" %>
+                          <b><%= notification.try(:friend).try(:fullname) %></b> aimerait devenir votre amis</b><br/>
+                          <div class="notifs-actions">
+                            <%= link_to accept_friendship_path(notification, user_id: notification.friend_id),:method => :post, :remote => true do %>
+                              <button class="btn btn-outline green btn-sm" type="button">Accepter</button>
+                            <%end %>
+                            <%= link_to reject_friendship_path(notification, user_id: notification.friend_id),:method => :post, :remote => true do %>
+                              <button class="btn btn-outline red btn-sm" type="button">Décliner</button>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                  <% end %>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown dropdown-extended dropdown-notification dropdown">
+              <a class="dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" href="javascript:;">
+                <span class="badge badge-success">Connaissez-vous?</span></a>
+              <ul  class="dropdown-menu" style="max-height: 500px; overflow:scroll;">
+                <li class="external">
+                    <h3><span class="bold">Connaissez-vous...</span></h3>
+                </li>
+                <li class="mt-actions">
+                    <% current_user.suggestion_users.each do |user| %>
+                    <div class="mt-action">
+                    <div class="mt-action-img">
+                        <%= image_tag("metronics/avatar2.jpg", :alt => "") %>
+                    </div>
+                    <div class="mt-action-body">
+                        <div class="mt-action-row">
+                        <div class="mt-action-info">
+                            <div class="mt-action-details">
+                            <span class="mt-action-author"><%= user.fullname %></span>
+                            </div>
+                        </div>
+                        <div class="mt-action-buttons">
+                            <div class="btn-group btn-group-circle">
+                            <%= link_to friendships_path({user_id: user.id}), :remote => true, :method => :post do%><button class="btn btn-outline green btn-sm" type="button">Ajouter</button> <%end %> <%= link_to user_show_path({id: user.id}) do%> <button class="btn btn-outline red btn-sm" type="button">Voir</button> <%end %>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div><%end %>
+                </li>
+              </ul>
+            </li>
+            <% if current_user.today_achievements.size > 0 %>
+                <li class="dropdown dropdown-extended dropdown-inbox dropdown-dark" id="header_inbox_bar">
+                  <a class="dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" href="javascript:;">
+                    <i class="fa fa-flag-o"></i> <span class="badge badge-success"><%= current_user.today_achievements.size %></span></a>
+                  <ul class="dropdown-menu">
+                    <li class="external">
+                      <h3><span class="bold">Objectifs</span></h3>
+                    </li>
+                    <li>
+                      <span class="bold"></span>
+                      <ul class="dropdown-menu-list scroller" data-handle-color="#637283" style="max-height: 275px; overflow-y: scroll;">
+                        <% current_user.today_achievements.each do |achievement| %>
+                          <li>
+                            <span class="bold"></span>
+                            <div class="friendships-content">
+                              <span class="bold">
+                                <span class="photo">
+                                    <i class="fa fa-calendar-o fa-2x"></i>
+                                </span>
+                                <span class="subject">
+                                  <span class="from">
+                                    <%= achievement.content %>
+                                  </span>
+                                </span>
+                                <div class="margin-top-10 text-right">
+                                <%= link_to success_achievement_path({id: achievement.id}), :remote => true, :method => :post do%><button class="btn green-meadow">Succès</button><%end %>
+                                <%= link_to failure_achievement_path({id: achievement.id}), :remote => true, :method => :post do%><button class="btn red-sunglo">Echec</button><%end %>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+            <% end %>
+          <li class="dropdown dropdown-user dropdown-dark">
+            <a class="dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" href="javascript:;">
+              <%if user_signed_in? %>
+                <span class="username username-hide-on-mobile"><%= current_user.fullname.titleize %></span>
+                <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
+               <%= image_tag(current_user.avatar.url, :alt => "", :class => "img-circle") %></a>
+               <ul class="dropdown-menu dropdown-menu-default">
+                 <li><%= link_to user_show_path(current_user.id), :class => 'navbar-link' do %><i class="icon-user"></i> Mon Profil <%end %></li>
+                 <li><%= link_to edit_user_registration_path, :class => 'navbar-link' do %><i class="icon-settings"></i> Paramètres <%end %></li>
+                 <li class="divider"></li>
+                 <li><%= link_to destroy_user_session_path, method: :delete, :class => 'navbar-link' do %><i class="icon-logout"></i> Deconnexion <%end %></li>
+               </ul>
+              <% end %>
+          </li>
+        </ul>
+      </div><!-- END TOP NAVIGATION MENU -->
+    </div><!-- END PAGE TOP -->
+  </div><!-- END HEADER INNER -->
+</div>

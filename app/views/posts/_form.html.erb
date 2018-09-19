@@ -1,0 +1,42 @@
+<%= form_for(post) do |f| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="main-input-photo-video">
+    <div class="field">
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+    </div>
+    <% if !group.nil? %>
+      <div class="field">
+        <%= f.hidden_field :group_id, :value => group.id %>
+      </div>
+    <% end %>
+
+    <% if !event.nil? %>
+      <div class="field">
+        <%= f.hidden_field :event_id, :value => event.id %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.file_field :picture, class: "inputfile inputfile-2" %>
+      <%= f.label :picture do %>
+          <span>Photo</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="field">
+    <%= f.text_area :content, class: "input-post", placeholder: "Ecrivez votre commentaire ici !" %>
+  </div>
+  <div class="actions main-input-share-btn">
+    <%= f.submit "Publier", class: "btn main-input-post green"%>
+  </div>
+<% end %>

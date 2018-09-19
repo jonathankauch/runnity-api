@@ -1,0 +1,119 @@
+<%= render 'layouts/main_css' %>
+  <button style="margin-bottom: 10px;" class="btn btn-success">   <%= link_to groups_path do %> Retour <% end %> </button>
+
+<%= image_tag(@group.avatar.url, :alt => "profil", :class => "img-responsive") %>
+<div class="innerwrap" style="width:100%; border-top: 2px solid #e9ecf3;">
+  <section class="section1 clearfix">
+    <div>
+      <div class="row grid clearfix">
+        <div class="col-md-10 first">
+          <h1><%= @group.name %></h1>
+          <div>
+            <%= @group.description %>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-12 social-stats-section">
+              <h1>
+                <i class="fa fa-user-o"> </i>
+                <%= @group.members.size %>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if @group.user == current_user %>
+      <div class="text-right margin-bottom-10" style="padding: 5px;">
+        <%= link_to edit_group_path(@group) do %>
+          <button class="btn blue"><i class="icon-settings"></i> Modifier les informations du groupe</button>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+  <section class="section2 clearfix">
+    <% if !@group.is_member(current_user) or @group.user == current_user %>
+      <div class="row">
+        <div class="col-md-8">
+            <div class="portlet light portlet-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-clock-o font-green" aria-hidden="true" style="font-size: 20px;"></i>
+                        <span class="caption-subject bold font-green uppercase">Fil d'actualité</span>
+                        <span class="caption-helper">Votre fil d'actualité</span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="container-index">
+                      <div class="col-md-12 main-input-container">
+                        <%= render 'posts/form', post: @post, group: @group, event: nil %>
+                      </div>
+                    </div>
+                </div>
+                <!-- all posts -->
+                <%= render 'posts/display_all', posts: @posts %>
+            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="portlet light portlet-fit bordered">
+            <div class="portlet-title">
+              <div class="clearfix"></div>
+              <div class="col-md-12">
+                <!-- Button trigger modal -->
+                <!--<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#myModal">
+                  Paramètres
+                </button>-->
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Paramètres</h4>
+                      </div>
+                      <div class="modal-body">
+                        <%= render 'configs/form', config: @group.try(:config) ? @group.config : Config.new, group: @group %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <%= render 'member_requests/form', request: @group, type: "group", member_request: MemberRequest.new %>
+              </div>
+              <div class="col-md-12" style="max-height:200px; overflow-y:scroll;">
+                <h4>Notifications</h4>
+                <hr />
+                <% if @group.user == current_user %>
+                  <% @group.pending_requests.each do |request| %>
+                  <div class="alert alert-info">
+                    <%= User.find(request.user_id).try(:fullname) %> aimerait rejoindre votre groupe.
+                    <%= link_to accept_member_request_path(:id => request.id), :method => :post, :remote => true do %><i class="fa fa-check"></i><% end %>
+                    <%= link_to reject_member_request_path(:id => request.id), :method => :post, :remote => true do %><i class="fa fa-close"></i><% end %>
+                  </div>
+                  <% end %>
+                <% end %>
+              </div>
+              <hr />
+              <div class="col-md-12">
+                <h4>Membres</h4>
+                <hr />
+                <div class="group-member">
+                  <span class="label label-success">PROPRIETAIRE</span>
+                  <%= @group.user.fullname %>
+                </div>
+                <% @group.members.each do |member| %>
+                <div class="group-member">
+                  <span class="label label-info">Membre</span>
+                  <%= User.find(member.user_id).fullname %>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <% end %>

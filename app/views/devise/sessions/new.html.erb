@@ -1,0 +1,106 @@
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "metronics/pages/login-5.min.css" %>
+<% end %>
+
+<!-- BEGIN : LOGIN PAGE 5-1 -->
+<div class="user-login-5">
+    <div class="row bs-reset">
+        <div class="col-md-6 bs-reset">
+            <div class="login-bg" style="background-image:url('/assets/metronics/login-bg1.jpg')">
+            </div>
+        </div>
+        <div class="col-md-6 login-container bs-reset">
+            <div class="login-content">
+                <h1><%= image_tag("/assets/logoRunit.png", class: "logo-login") %></h1>
+                <p>
+                  RunIt est un réseau social pour les coureurs qui va permettre aux utilisateurs de se regrouper et de partager la même passion. L'utilisateur pourra créer et s'inscrire à des évènements publics ou privés. Pendant leurs courses, un suivi statistique sera disponible pour contribuer à leur évolution.
+                  <br />
+                  <br />
+                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                   Seul on va plus vite, ensemble on va plus loin
+                  <i class="fa fa-quote-right" aria-hidden="true"></i>
+                </p>
+                <!-- FORM BEGIN -->
+                <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => "login-form"}) do |f| %>
+                    <div class="alert alert-danger display-hide">
+                        <button class="close" data-close="alert"></button>
+                        <span>Enter any username and password. </span>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <h4>Connexion</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                          <%= f.email_field :email, autofocus: true, class: "form-control form-control-solid placeholder-no-fix form-group", autocomplete: "off", placeholder: "Email", required: true %>
+                        </div>
+                        <div class="col-xs-6">
+                          <%= f.password_field :password, autocomplete: "off", class: "form-control form-control-solid placeholder-no-fix form-group", placeholder: "Password", required: true %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="rem-password">
+                                <% if devise_mapping.rememberable? %>
+                                  <%= f.label :remember_me, :class => "rememberme mt-checkbox mt-checkbox-outline" do %>
+                                      <%= f.check_box :remember_me %> Se souvenir
+                                      <span></span>
+                                  <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 text-right">
+                            <div class="forgot-password">
+                                <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                                  <%= link_to "Oublie de mot de passe?", new_password_path(resource_name), :class => "forget-password"%><br />
+                                <% end -%>
+                            </div>
+                            <button class="btn green" type="submit">Connexion</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <p>
+                          Toujours pas de compte ?
+                          <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+                            <%= link_to "Inscrivez-vous", new_registration_path(resource_name), :class => "font-green" %><br />
+                          <% end -%>
+                        </p>
+                      </div>
+                    </div>
+                <% end %>
+                <!-- FORM END -->
+            </div>
+            <div class="login-footer">
+                <div class="row bs-reset">
+                    <div class="col-xs-5 bs-reset">
+                        <ul class="login-social">
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="icon-social-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="icon-social-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="icon-social-dribbble"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-7 bs-reset">
+                        <div class="login-copyright text-right">
+                            <p>Copyright &copy; Runit 2016</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END : LOGIN PAGE 5-1 -->

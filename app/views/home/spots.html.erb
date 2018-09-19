@@ -1,0 +1,256 @@
+<%= render 'layouts/main_css' %>
+
+<% content_for :javascript_head do %>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.js'></script>
+<% end %>
+
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <!-- BEGIN PAGE TITLE -->
+    <div class="page-title">
+        <h1>Les courses partagées
+        </h1>
+    </div>
+    <!-- END PAGE TITLE -->
+</div>
+<!-- END PAGE HEAD-->
+<!-- BEGIN DASHBOARD STATS 1-->
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+            <div class="visual">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <div class="details">
+                <div class="number" style="font-size: 24px">
+                    <span id="run-date" data-counter="counterup" data-value="1349"><%= @last_run.started_at.strftime("%Y-%m-%d") if @last_run %></span>
+                </div>
+                <div class="desc"> Date </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 red" href="#">
+            <div class="visual">
+                <i class="fa fa-clock-o"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span id="run-total-time" data-counter="counterup" data-value="12,5"><%= @last_run.total_time if @last_run %></span></div>
+                <div class="desc"> Temps total </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+            <div class="visual">
+                <i class="fa fa-map"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span id="run-total-distance" data-counter="counterup" data-value="89"><%= @last_run.total_distance if @last_run %></span></div>
+                <div class="desc"> Distance </div>
+            </div>
+        </a>
+    </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+            <div class="visual">
+                <i class="fa fa-heart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span id="run-like" data-counter="counterup" data-value="549"><%= @last_run.votes_for.size if @last_run %></span>
+                </div>
+                <div class="desc"> J'aime </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+        <div class="map-container">
+          <div class="run-info">
+          </div>
+          <div id='map'></div>
+          <div id='data-run' data-run="<%= @last_run.to_json %>"></div>
+        </div>
+      </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet box green">
+      <div class="portlet-title">
+        <div class="caption">
+          <i class="icon-graph"></i>
+           Les courses partagées
+        </div>
+      </div>
+      <div class="portlet-body flip-scroll">
+        <p>En cliquant sur "Afficher", la course va s'afficher sur la carte</p>
+        <table class="table table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content">
+              <tr>
+                <th>Coureur</th>
+                <th>Like</th>
+                <th>Date</th>
+                <th>Distance</th>
+                <th>Temps total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+          <tbody>
+            <% @runs.each do |run| %>
+              <tr>
+                <td><%= run.user.fullname %></td>
+                <td><%= run.votes_for.size %></td>
+                <td><%= run.started_at.to_formatted_s(:short) %></td>
+                <td><%= run.total_distance %> m</td>
+                <td><%= run.total_time %> min</td>
+                <td>
+                  <a href="#" class="show-run" data-run="<%= run.to_json %>">
+                    <button class="btn green">Afficher</button>
+                  </a>
+                  <% if current_user.voted_for? run %>
+                    <%= link_to unlike_run_path(run.id) do %><button class="btn btn-outline red btn-sm" type="button">Je n'aime plus</button> <%end %>
+                  <% else %>
+                    <%= link_to like_run_path(run.id) do %><button class="btn btn-outline green btn-sm" type="button">J'aime</button> <%end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript do %>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9ucXVhY2giLCJhIjoiY2l5eDY5b29hMDA0NjJ3bGV4bzFrMW44OSJ9.D_SMbkoqc7wofC7cEVL8jA';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/jonquach/ciz96k5qw004s2so5j7fje47d'
+    });
+
+    $('.show-run').click(function(e) {
+      e.preventDefault();
+      console.log($(this).attr('data-run'));
+      makeLayer($(this).attr('data-run'));
+      return false;
+    })
+
+    var oldLayer = "";
+
+    var makeLayer = function(obj) {
+      try {
+        var run = JSON.parse(obj);
+
+        if (run == null) {
+          console.log(run, obj);
+          console.log('There is no run to display');
+          return;
+        }
+
+        var coordinates = [];
+        var rc = JSON.parse(run.coordinates);
+      } catch(e) {
+        console.error('Run is not parsable ->', e);
+        return;
+      }
+
+      for (var i = 0; i < rc.length; ++i) {
+        coordinates.push([rc[i].longitude, rc[i].latitude])
+      }
+
+      console.log(run, coordinates);
+
+      console.log(new Date(run.started_at));
+      $("#run-date").html(createDate(run.started_at));
+      $("#run-total-time").html(run.total_time);
+      // $("#run-like").html(run.likes);
+      $("#run-total-distance").html(run.total_distance);
+
+      var layer = {
+        "id": "route" + run.id,
+        "type": "line",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": coordinates
+                }
+            }
+        },
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#17eec3",
+            "line-opacity": 0.65,
+            "line-width": 6,
+            "line-blur": 2
+        }
+      }
+
+      if (oldLayer != "") {
+        console.log('remove old layer', oldLayer);
+        map.removeLayer(oldLayer);
+        map.removeSource(oldLayer);
+      }
+
+      // Fly to location, centering the map on the average point, by total
+      var avr_pt = Math.round(coordinates.length / 2);
+      map.flyTo({
+          center: [coordinates[avr_pt][0], coordinates[avr_pt][1]]
+      });
+
+      oldLayer = 'route' + run.id;
+      map.addLayer(layer);
+    }
+
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.GeolocateControl());
+    map.addControl(new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken
+    }));
+    map.on('result', function(ev) {
+        map.getSource('single-point').setData(ev.result.geometry);
+    });
+
+    map.on('load', function () {
+       makeLayer($('#data-run').attr('data-run'));
+    });
+
+    function createDate(str) {
+      date = new Date(str);
+      day = date.getDay() + 1;
+      if (day < 10) {
+        day = '0' + day;
+      }
+      month = date.getMonth() + 1;
+      if (month < 10) {
+        month = '0' + month;
+      }
+      year = date.getFullYear();
+      total = year + '-' + month + '-' + day;
+      return total;
+    }
+  </script>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.0.1/mapbox-gl-geocoder.css' type='text/css' />
+<% end %>

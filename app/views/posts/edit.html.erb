@@ -1,0 +1,22 @@
+<%= render 'layouts/main_css' %>
+
+<!-- BEGIN PAGE TITLE -->
+<div class="page-head">
+  <div class="page-title">
+      <h1>Editer post
+      </h1>
+  </div>
+</div>
+<!-- END PAGE TITLE -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-body">
+        <%= render 'form', post: @post %>
+
+        <%= link_to 'Afficher', @post %> |
+        <%= link_to 'Retour', posts_path %>
+      </div>
+    </div>
+  </div>
+</div>

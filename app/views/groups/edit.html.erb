@@ -1,0 +1,21 @@
+<%= render 'layouts/main_css' %>
+
+<div class="page-head">
+  <div class="page-title">
+    <h1>Editer un groupe</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-body">
+        <%= render 'form', group: @group %>
+
+        <%= link_to 'Afficher', @group %> |
+        <%= link_to 'Retour', groups_path %>
+      </div>
+    </div>
+  </div>
+</div>
+

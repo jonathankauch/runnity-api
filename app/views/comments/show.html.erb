@@ -1,0 +1,19 @@
+<%= render 'layouts/main_css' %>
+
+<p>
+  <strong>Poste:</strong>
+  <%= @comment.post_id %>
+</p>
+
+<p>
+  <strong>Contenu:</strong>
+  <%= @comment.content %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @comment.picture %>
+</p>
+
+<%= link_to 'Afficher', edit_comment_path(@comment) %> |
+<%= link_to 'Retour', comments_path %>

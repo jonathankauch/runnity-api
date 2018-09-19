@@ -1,0 +1,4 @@
+
+$('#suggest-events').empty();
+
+$('#suggest-events').html("<%= escape_javascript (render 'events/events', :events => @events) %>");

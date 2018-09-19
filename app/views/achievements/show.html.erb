@@ -1,0 +1,35 @@
+<%= render 'layouts/main_css' %>
+
+<!-- BEGIN PAGE TITLE -->
+<div class="page-head">
+  <div class="page-title">
+      <h1>Objectif
+      </h1>
+  </div>
+</div>
+<!-- END PAGE TITLE -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-body">
+        <p>
+          <span class='descriptif font-green'>Description de l'objectif:</span><br />
+          <%= @achievement.content %>
+        </p>
+        <p>
+          <span class='descriptif font-green'>Date de début:</span><br />
+          <%= @achievement.start_date %>
+        </p>
+        <p>
+          <span class='descriptif font-green'>Date de fin:</span><br />
+          <%= @achievement.due_date %>
+        </p>
+        <p>
+          <span class='descriptif font-green'>Objectif atteint ?:</span><br />
+          <%= @achievement.is_achieve ? 'Oui' : 'Non' %>
+        </p>
+        <%= link_to '< Liste des objectifs', achievements_path %>
+      </div>
+    </div>
+  </div>
+</div>

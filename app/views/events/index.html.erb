@@ -1,0 +1,141 @@
+<%= render 'layouts/main_css' %>
+<p id="notice"><%= notice %></p>
+<nav class="navbar navbar-default" id="event-nav">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#event-nav-content" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="event-nav-content">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#my-events" aria-controls="home" role="tab" data-toggle="tab">
+              Mes événements
+            </a>
+          </li>
+          <li class="active">
+            <a href="#other-events" aria-controls="home" role="tab" data-toggle="tab">
+              Découvrir
+            </a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="background-color: #36c6d3">
+          <li class="new-group">
+            <a data-toggle="modal" data-target="#new-group" style="text-color: white">
+              <i class="glyphicon glyphicon-plus"></i> Créer un événement
+            </a>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+</nav>
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane" id="my-events">
+      <h3>Mes événements</h3>
+    <% @current_user.events.each do |event| %>
+    <div class="col-md-4">
+      <div class="col-md-12" style="background-color:white; padding:1em; margin-bottom : 10px;">
+        <div class="tile-container">
+          <div class="tile-thumbnail">
+            <%= image_tag event.avatar.url, width: "100%", height: "auto" %>
+          </div>
+          <div class="panel-body text-center">
+            <%= link_to event do %>
+            <h4 style="text-align:center;"><%= truncate( event.name, length: 20) %></h4>
+            <% end %>
+            <div style="margin-bottom: 2px">
+              <span><%= event.private_status ? '<span class="label label-sm label-warning">PRIVEE</span>'.html_safe : '<span class="label label-sm label-success">PUBLIC</span>'.html_safe %></span>
+            </div>
+            <div style="margin-bottom: 2px">
+              <span class="label label-sm label-info">Crée par : <%= event.try(:user).try(:fullname) %></span>
+            </div>
+            <div class="row center" >
+                <%= link_to event, :method => :delete, :remote => true  do %>
+                <button style="display: block; margin: auto; margin-top: 15px;" class="btn btn-danger">Supprimer</button>
+            </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+    <% if current_user.belongs_events.size > 0 %>
+      <div class="col-lg-12">
+        <h3>Evénements abonnés</h3>
+        <hr />
+      </div>
+      <% current_user.belongs_events.each do |event| %>
+      <div class="col-md-4">
+        <div class="col-md-12" style="background-color:white; padding:1em; margin-bottom : 10px;">
+          <div class="tile-container">
+            <div class="tile-thumbnail">
+              <%= image_tag event.avatar.url, width: "100%", height: "auto" %>
+            </div>
+            <div class="panel-body text-center">
+              <%= link_to event  do %>
+              <h4><%= truncate( event.name, length: 20) %></h4>
+              <% end %>
+              <div style="margin-bottom: 2px">
+                <%= event.private_status ? '<span class="label label-sm label-warning">PRIVEE</span>'.html_safe : '<span class="label label-sm label-success">PUBLIC</span>'.html_safe %></span>
+              </div>
+              <div style="margin-bottom: 2px">
+                <span class="label label-sm label-info">Crée par : <%= event.try(:user).try(:fullname) %></span>
+              </div>
+                <%= link_to '<button class="btn btn-danger" style="margin-top: 15px;">Quitter cet événement</button>'.html_safe, leave_event_path(:id => event.id), :method => :post, :remote => true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div role="tabpanel" class="tab-pane active" id="other-events">
+    <div class="col-lg-12" style="background-color:white; padding: 1em; margin-bottom: 20px;">
+      <%= form_tag event_filter_path, method: :get, remote: true, class: "navbar-form navbar-left search-form" do %>
+          <div class="search-filter bordered">
+            <div class="input-icon right form-group">
+              <i class="icon-magnifier"></i>
+                <%= text_field_tag(
+                    :key_word,
+                    params[:key_word],
+                    placeholder: "Nom de l'événement",
+                    class: "form-control"
+                ) %>
+            </div>
+            <%= select_tag(
+              :type,
+              options_for_select({"Public" => 0, "Privé" => 1, "Tout" => 2}, 2), class:"form-control", style: "display:none"
+            ) %>
+            <%= submit_tag "Filtrer", class: "btn btn-default" %>
+          </div>
+      <% end %>
+    </div>
+    <div class="col-lg-12" id="suggest-events">
+      <%= render "events", events: @events %>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="new-group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nouveau événement</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', event: @event %>
+      </div>
+    </div>
+  </div>
+</div>

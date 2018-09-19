@@ -1,0 +1,7 @@
+
+<% if !@error %>
+  swal("", "Vous avez refusé cette demande d'adhésion", "success");
+<% else %>
+  swal("", 'Votre demande a échoué, veuillez réessayer ultérieurement.', "error");
+<% end %>
+location.reload();

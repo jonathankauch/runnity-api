@@ -1,0 +1,57 @@
+<%= render 'layouts/main_css' %>
+<div class="page-head">
+  <div class="page-title">
+    <h1>Conversation</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+<input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Cherchez un ami">
+    <table id="myTable">
+      <tr class="header">
+        <th style="width:60%;">Nom</th>
+      </tr>
+        <% @users.each do |user| %>
+      <tr>
+        <td class="list-group-item list-group-item-action"><%= link_to user.fullname, conversations_path(user_id: user), remote: true, method: :post %></td>
+      </tr>
+      <!-- <%= link_to(conversations_path(user_id: user), remote: true, method: :post) do %>
+        <tr>
+        <div><%= user.email %> </div>
+        </tr>
+      <% end %> -->
+        <% end %>
+      </table>
+  </div>
+
+  <div class="col-md-8">
+    <ul id="conversations-list">
+      <% @conversations.each do |conversation| %>
+        <%= render 'conversations/conversation', conversation: conversation, user: current_user %>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

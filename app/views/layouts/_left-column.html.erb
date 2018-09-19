@@ -1,0 +1,131 @@
+<div class="page-sidebar navbar-collapse collapse">
+    <!-- BEGIN SIDEBAR MENU -->
+    <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+        <li class="nav-item start active open">
+            <a href="/" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Dashboard</span>
+            </a>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Courses</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to my_runs_path, :class => "av-link nav-toggle" do %>
+                <i class="icon-graph"></i>
+                Mes courses
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="nav-item">
+            <%= link_to spots_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-users"></i>
+                Les courses partagées
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Statistique</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to dashboard_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                Mes statistiques
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Objectifs</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to achievements_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-flag-o"></i>
+                Mes objectifs
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Evénements</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to events_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                Mes événements
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="nav-item">
+            <%= link_to events_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                Tous les événements
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Groupes</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to groups_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-users" aria-hidden="true"></i>
+                Mes groupes
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="nav-item">
+            <%= link_to groups_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-address-book" aria-hidden="true"></i>
+                Tous les groupes
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Social</h3>
+        </li>
+        <li class="nav-item">
+            <%= link_to messenger_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-comments-o" aria-hidden="true"></i>
+                Mes conversations
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="nav-item">
+            <%= link_to advice_path, :class => "av-link nav-toggle" do %>
+                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                Conseil
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="heading">
+            <h3 class="uppercase">Compte</h3>
+        </li>
+        <li class="nav-item">
+          <%= link_to edit_user_registration_path, :class => 'av-link nav-toggle' do %>
+                <i class="icon-settings" aria-hidden="true"></i>
+                Paramètre du compte
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+        <li class="nav-item">
+            <%= link_to destroy_user_session_path, method: :delete, :class => "av-link nav-toggle" do %>
+              <i class="icon-key" aria-hidden="true"></i>
+                Se déconnecter
+                <span class="title"></span>
+                <span class="arrow"></span>
+            <% end %>
+        </li>
+
+    </ul>
+    <!-- END SIDEBAR MENU -->
+</div>
+<!-- END SIDEBAR -->

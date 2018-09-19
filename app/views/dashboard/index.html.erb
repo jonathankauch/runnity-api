@@ -1,0 +1,151 @@
+<%= render 'layouts/main_css' %>
+
+<div class="page-head">
+  <div class="page-title">
+    <h1>Statistiques</h1>
+  </div>
+</div>
+
+<div id="runs_by_month" data-attr="<%= @runs_by_month %>"></div>
+<div id="time_run_by_month" data-attr="<%= @time_run_by_month %>"></div>
+<div id="distance_by_month" data-attr="<%= @distance_by_month %>"></div>
+<div id="calories_by_month" data-attr="<%= @calories_by_month %>"></div>
+
+<div class="container-fluid">
+  <div class="row block-graph">
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Nombre de course total :
+          <br/>
+          <span class="nb-course-total"><%= @nb_runs %> courses</span>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Nombre de pas total :
+          <br/>
+          <span class="nb-step-total"><%= @nb_steps %> pas</span>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Nombre de kilometre parcourt :
+          <br/>
+          <span class="nb-kilometre-total"><%= @kms %> km</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row block-graph">
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Temps total de course :
+          <br/>
+          <span class="nb-kilometre-total"><%= @total_time_run %> min</span>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Vitesse maximal :
+          <br/>
+          <span class="dark-red"><%= @max_speed %> km/h</span>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 block-nb-stats">
+      <div class="block-stats">
+        <p>
+          Vitesse moyenne :
+          <br/>
+          <span class="nb-kilometre-total"><%= @average_speed %> km/h</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row block-graph">
+    <div class="col-md-4 block-nb-stats" style="padding-left: 15px; padding-right: 2px;">
+      <div class="block-stats">
+        <p>
+          Total de calories brûlées :
+          <br/>
+          <span class="nb-kilometre-total"><%= @calories %> cals</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+<div class="row block-graph">
+  <div class="col-md-12">
+    <div style="width: 100%; height: 300px;" class="block-stats">
+      <canvas id="runNbMonthChart" width="400" height="300" class="canvas-stats"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row block-graph">
+  <div class="col-md-12">
+    <div style="width: 100%; height: 400px;" class="block-stats">
+      <canvas id="distanceMonthChart" width="400" height="300" class="canvas-stats"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row block-graph">
+  <div class="col-md-12">
+    <div style="width: 100%; height: 400px;" class="block-stats">
+      <canvas id="timeMonthChart" width="400" height="300" class="canvas-stats"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row block-graph">
+  <div class="col-md-12">
+    <div style="width: 100%; height: 400px;" class="block-stats">
+      <canvas id="caloriesMonthChart" width="400" height="300" class="canvas-stats"></canvas>
+    </div>
+  </div>
+</div>
+
+
+<!-- 
+<div class="row block-graph">
+  <div class="col-md-6">
+    <div style="width: 100%; height: 300px" class="block-stats">
+      <canvas id="skillChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div style="width: 100%; height: 300px" class="block-stats">
+      <canvas id="weightChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row block-graph">
+  <div class="col-md-6">
+    <div style="width: 100%; height: 300px" class="block-stats">
+      <canvas id="stepPerDayChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div style="width: 100%; height: 300px" class="block-stats">
+      <canvas id="stepPerWeekChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div> -->
+
+<br/>
+<br/>
+
+</div>

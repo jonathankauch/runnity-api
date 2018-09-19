@@ -1,0 +1,70 @@
+
+<%= form_for(event) do |f| %>
+  <% if event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <% if event.pictures.count > 0 %>
+      <div class="post-img text-center">
+        <img src="<%= event.pictures.first.url %>" alt="" class="img-responsive" style="margin-left:auto; margin-right: auto;"/>
+      </div>
+    <% end %>
+  </p>
+
+  <div class="field">
+    <%= f.label 'Image' %>
+    <%= f.file_field :avatar, { :class => 'form-control' } %>
+  </div>
+
+  <div class="form-group"><br/>
+    <%= f.hidden_field :user_id, :value => @current_user.id %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Nom de l'événement" %>
+    <%= f.text_field :name, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Description' %>
+    <%= f.text_area :description, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Date de début' %>
+    <%= f.datetime_select :start_date, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Date de fin' %>
+    <%= f.datetime_select :end_date, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Ville' %>
+    <%= f.text_field :city, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Evénement privé ?' %>
+    <%= f.check_box :private_status, { :class => 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Distance' %>
+    <%= f.number_field :distance, { :class => 'form-control' }%>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Enregistrer", class: "btn green" %>
+  </div>
+<% end %>

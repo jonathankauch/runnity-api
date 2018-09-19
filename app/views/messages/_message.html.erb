@@ -1,0 +1,12 @@
+<li class="<%= user.id == message.user_id ? 'out' : 'in' %>">
+  <img class="avatar" alt="" src="/assets/default-avatar-af0113af4190dabcd34dd129097b735dac12c03d2fb8ce3f73db6c99472b59a5.png" />
+        <div class="message">
+            <span class="arrow"> </span>
+            <a href="javascript:;" class="name"></a>
+
+
+            <span class="datetime"><i> <%= message.created_at.localtime.to_time.strftime('%d/%m/%Y à %l:%M')
+ %></i></span>
+            <h5><b><%= message.body %></b><h5>
+        </div>
+    </li>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Runit</title>
+    <%= csrf_meta_tags %>
+
+    <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "application", params[:controller], :media => "all" if !assets_manifest.assets["#{params[:controller]}.css"].nil? %>
+    <%= stylesheet_link_tag "metronics/global/simple-line-icons/simple-line-icons.min.css" %>
+    <%= stylesheet_link_tag "metronics/global/plugins/bootstrap/css/bootstrap.min.css" %>
+    <%= stylesheet_link_tag "metronics/global/font-awesome/css/font-awesome.min.css" %>
+    <%= stylesheet_link_tag "metronics/global/components-rounded.css" %>
+    <%= stylesheet_link_tag "metronics/global/plugins.min.css" %>
+    <%= yield :stylesheet %>
+
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag params[:controller] if !assets_manifest.assets["#{params[:controller]}.js"].nil? %>
+    <%= yield :javascript_head %>
+  </head>
+
+  <% if user_signed_in? %>
+    <body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">
+      <%= render 'layouts/navbar' %>
+    <div class="clearfix">
+    </div>
+    <div class="container">
+      <div class="page-container">
+        <div class="page-siderbar-wrapper">
+          <%= render 'layouts/left-column' %>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content" style="min-height: 951px;">
+              <%= yield %>
+            </div>
+        </div>
+      </div>
+    </div>
+      <!-- <div class="col-md-3">
+          <%= render 'layouts/right-column' %>
+      </div> -->
+    <% if !user_signed_in? %>
+      <%= render "layouts/footer" %>
+    <% end %>
+  <% else %>
+  <body class="login">
+      <%= yield %>
+  <% end %>
+
+  <%= yield :javascript %>
+  </body>
+</html>

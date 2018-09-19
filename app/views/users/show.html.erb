@@ -1,0 +1,110 @@
+<%= render 'layouts/main_css' %>
+<%= content_for :stylesheet do %>
+  <%= stylesheet_link_tag 'metronics/pages/profile-2.css' %>
+<% end %>
+
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <!-- BEGIN PAGE TITLE -->
+    <div class="page-title">
+        <h1><%= @user.fullname.titleize %>
+        </h1>
+    </div>
+    <!-- END PAGE TITLE -->
+</div>
+<!-- END PAGE HEAD-->
+
+<!-- BEGIN PAGE BASE CONTENT -->
+<div class="profile">
+    <div class="tabbable-line tabbable-full-width">
+        <ul class="nav nav-tabs">
+            <li class="active">
+              <%= link_to "Général", user_show_path(current_user.id), html: {dataToggle: "tab"} %>
+            </li>
+            <% if @user.id == current_user.id %>
+            <li>
+              <%= link_to "Compte", edit_user_registration_path, html: {dataToggle: "tab"} %>
+            </li>
+            <% end %>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1_1">
+                <div class="row">
+                    <div class="col-md-3">
+                        <ul class="list-unstyled profile-nav">
+                            <li>
+                                <%= image_tag(@user.avatar.url, :alt => "", :class => "img-responsive pic-bordered") %>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-8 profile-info">
+                                <h1 class="font-green sbold uppercase"><%= @user.fullname.titleize %></h1>
+                                <p>
+                                  <% if @user.description.nil? %>
+                                    Pas de description
+                                  <% else %>
+                                    <%= @user.description %>
+                                  <% end %>
+                                </p>
+                            </div>
+                            <!--end col-md-8-->
+                            <div class="col-md-4">
+                                <div class="portlet sale-summary">
+                                    <div class="portlet-title">
+                                        <div class="caption font-red sbold">
+                                          Informations
+                                        </div>
+                                        <div class="tools">
+                                            <a class="reload" href="javascript:;"></a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                            <div class="sale-info">
+                                                    Email
+                                                    <i class="fa fa-img-up"></i>
+                                                </div>
+                                                <div class="sale-num">
+                                                    <%= @user.email %>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="sale-info">
+                                                    Téléphone
+                                                    <i class="fa fa-img-down"></i>
+                                                </div>
+                                                <div class="sale-num">
+                                                    <%= @user.phone %>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="sale-info">
+                                                    Ville
+                                                </div>
+                                                <div class="sale-num">
+                                                    <%= @user.address %>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end col-md-4-->
+                        </div>
+                        <!--end row-->
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <hr class="hr-divider-grey"/>
+                    <%= render 'posts/display_all', posts: @posts %>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE BASE CONTENT -->

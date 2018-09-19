@@ -1,0 +1,35 @@
+<div class="col-md-3 social-col">
+  <div class="suggest-friend">
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation" class="active"><a href="#suggestions" aria-controls="suggestions" role="tab" data-toggle="tab">Suggestions</a></li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" id='suggestions' class="tab-pane active">
+        <ul class="list-group" id='scroll-div'>
+          <% current_user.suggestion_users.each do |user| %>
+            <li class="list-group-item"><%= user.fullname %>
+              <%= link_to friendships_path({user_id: user.id}),
+              :remote => true, :method => :post do%>
+                <span>
+                  <i id="add-friend" class="fa fa-plus"></i>
+                </span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="friend-list">
+    <h2>Liste d'amis</h2>
+    <% current_user.friends.each do |friendship| %>
+      <ul class="list-group">
+        <li class="list-group-item"><%= friendship.friend.fullname %>
+          <%= link_to friendship_path(friendship, user_id: friendship.friend_id), :method => :delete, :remote => true do %>
+            <span><i id="delete-friend" class="fa fa-minus"></i></span>
+          <% end %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>

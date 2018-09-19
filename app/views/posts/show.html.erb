@@ -1,0 +1,95 @@
+<%= render 'layouts/main_css' %>
+<p id="notice">
+  <%= notice %>
+</p>
+<!-- TIMELINE ITEM -->
+<div class="row">
+  <div class="col-md-8">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-body">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-badge">
+              <%= image_tag("default-avatar.png", :alt => "profil", :class => "timeline-badge-userpic") %>
+            </div>
+            <div class="timeline-body">
+              <div class="timeline-body-arrow"> </div>
+              <div class="timeline-body-head">
+                <div class="timeline-body-head-caption">
+                  <%= link_to user_show_path(@post.user.id), :class => 'timeline-body-title font-blue-madison' do %>
+                  <%= @post.user.try(:fullname).titleize %>
+                  <% end %>
+                  <span class="timeline-body-time font-grey-cascade">
+                    <%= @post.created_at.to_formatted_s(:short) %>
+                  </span>
+                </div>
+                <% if @post.user_id == current_user.id %>
+                <div class="timeline-body-head-actions">
+                  <div class="btn-group">
+                    <button class="btn btn-circle green btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> <i class="icon-settings"></i>
+                      <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                      <li>
+                        <%= link_to "Modifier", edit_post_path(@post) %>
+                      </li>
+                      <li>
+                        <%= link_to "Supprimer", delete_post_path(@post), method: :delete, remote: true, confirm: "Etes-vous sure ?" %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+              <div class="timeline-body-content">
+                <div class="font-grey-cascade">
+                  <%= @post.content %>
+                </div>
+                <% if @post.pictures.count > 0 %>
+                <div class="post-img text-center">
+                  <img src="<%= @post.pictures.first.url %>" alt="" class="img-responsive" style="margin-left:auto; margin-right: auto;" />
+                </div>
+                <% else %>
+                <div class="post-img text-center">
+                  <img src="<%= @post.picture %>" alt="" class="img-responsive" style="margin-left:auto; margin-right: auto;" />
+                </div>
+                <% end %>
+                <div class="font-grey-cascade">
+                  <hr class="hr-divider-grey" />
+                  <% if @post.comments.count != 0 %>
+                    <div class="comment-counter">
+                      <p>
+                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                        <%= @post.comments.count %> Commentaire(s)
+                      </p>
+                    </div>
+                    <% @post.comments.each do |comment| %>
+                      <div class="comment-block">
+                        <span>
+                          <%= image_tag("metronics/avatar2.jpg", :alt => "", :class => "img-circle") %>
+                          <%= link_to comment.user.fullname, user_show_path(comment.user.id) %> <small>publié le <%= comment.created_at.to_formatted_s(:short) %></small><br />
+                          <%= comment.content %>
+                        </span>
+                      </div>
+                    <% end %>
+                  <% end %>
+                  <div class="form-group" style="margin-top: 10px;">
+                    <div class="input-group">
+                      <input type="text" class="form-control input-post-<%= @post.id %>" placeholder="Votre commentaire ...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-secondary green submit-comment" data-user="<%= current_user.id %>" data-post="<%= @post.id %>" type="button">Ok</button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%#= link_to 'Editer', edit_post_path(@post) %>
+<%= link_to 'Retour au posts', posts_path %>

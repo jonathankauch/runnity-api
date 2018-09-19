@@ -1,0 +1,158 @@
+<%= render 'layouts/main_css' %>
+<%= content_for :stylesheet do %>
+  <%= stylesheet_link_tag 'metronics/pages/profile-2.css' %>
+<% end %>
+
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <!-- BEGIN PAGE TITLE -->
+    <div class="page-title">
+        <h1><%= @user.fullname.titleize %>
+        </h1>
+    </div>
+    <!-- END PAGE TITLE -->
+</div>
+<!-- END PAGE HEAD-->
+
+<!-- BEGIN PAGE BASE CONTENT -->
+<% if flash[:notice] %>
+    <p class="flash-error"><%= flash[:notice] %></p>
+  <% end %>
+<div class="profile">
+    <div class="tabbable-line tabbable-full-width">
+        <ul class="nav nav-tabs">
+            <li>
+                <%= link_to "Général", user_show_path(current_user.id), html: {dataToggle: "tab"} %>
+            </li>
+            <li class="active">
+                <%= link_to "Compte", edit_user_registration_path, html: {dataToggle: "tab"} %>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!--tab_1_2-->
+            <div class="tab-pane active" id="tab_1_3">
+                <div class="row profile-account">
+                    <div class="col-md-12">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                              <div class="form-group">
+                                <p style="color: #333333; font-size: 14px;">
+                                  Avatar
+                                </p>
+                                <%= image_tag(@user.avatar.url, :alt => "", :class => "img-circle", :style => "width: 200px") %>
+                              </div>
+                              <hr />
+                              <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
+                                <%= devise_error_messages! %>
+
+                                <div class="form-group">
+                                  <%= f.label "Avatar"%><br />
+                                  <small>Clique ici pour change d'avatar</small>
+                                  <%= f.file_field :avatar %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Prénom" %><br/>
+                                    <%= f.text_field :firstname, autofocus: true, class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Nom" %><br/>
+                                    <%= f.text_field :lastname, class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label :email %><br/>
+                                    <%= f.email_field :email, class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Poids (kg)" %><br/>
+                                    <%= f.number_field :weight, class: "form-control" %>
+                                </div>
+
+                                <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                                <div>Currently waiting confirmation for:
+                                    <%= resource.unconfirmed_email %></div>
+                                <% end %>
+
+                                <div class="form-group">
+                                    <%= f.label "Mot de passe" %>
+                                    <small>(Laissez vide si vous ne voulez pas le changer)</small><br/>
+                                    <% if @minimum_password_length %>
+                                    <small><%= @minimum_password_length %>
+                                        caractères minimum</small>
+                                    <% end %>
+                                    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Confirmer le mot de passe" %><br/>
+                                    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Mot de passe actuel" %>
+                                    <small>(Nous avons besoin de votre mot de passe actuel pour la modification)</small><br/>
+                                    <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Adresse" %><br/>
+                                    <%= f.text_field :address, autocomplete: "off", required: true, placeholder: 'Veuillez renseigner votre addresse', class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label "Téléphone" %><br/>
+                                    <%= f.text_field :phone, autocomplete: "off", class: "form-control" %>
+                                </div>
+
+                                <div class="form-group">
+                                    <%= f.label :description %><br/>
+                                    <%= f.text_area :description, autocomplete: "off", class: "form-control", rows: "5" %>
+                                </div>
+
+                                <div class="actions">
+                                    <%= f.submit "Enregistrer", class: "btn green" %>
+                                    <a href="#">
+                                      <button class="btn default">
+                                          Annuler
+                                      </button>
+                                    </a>
+                                </div>
+                              <% end %>
+
+                              <h3>Annuler son compte ?</h3>
+
+                              <p>Mécontent?
+                                  <%= button_to "Annuler son compte", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn dark" %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-md-9-->
+                </div>
+            </div>
+            <!--end tab-pane-->
+        </div>
+    </div>
+</div>
+
+<% content_for :javascript do %>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC37zO4UcK2NkrurdvIjJGgRas7Wdm001A&libraries=places"></script>
+
+    <script type="text/javascript">
+        $('document').ready(function() {
+            var defaultBounds = new google.maps.LatLngBounds(
+              new google.maps.LatLng(46.2276, 2.2137),
+              new google.maps.LatLng(48.8566, 2.3522));
+
+            var input = document.getElementById('user_address');
+            var options = {
+              bounds: defaultBounds,
+              types: ['address']
+            };
+
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+        });
+    </script>
+<% end %>

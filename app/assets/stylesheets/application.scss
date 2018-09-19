@@ -1,0 +1,388 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require sweetalert2
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome";
+
+@font-face {
+    font-family: 'TrueLies';
+    src: url('TrueLies.ttf');
+}
+html {
+  height: 100%;
+}
+li {
+  list-style: none;
+}
+form {
+  .field {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .actions {
+    margin-top: 20px;
+    margin-bottom: 5px;
+  }
+}
+.menu {
+  background: #7647c4;
+  width: 100%;
+  .navbar-nav a {
+    // color: #FFF !important;
+  }
+  .icon-bar {
+    background-color: #FFF !important;
+  }
+
+  #notification-button {
+    width: 400px !important;
+    background-color: white;
+    padding: 1em;
+
+    span {
+      float: right;
+    }
+    #accept-icone i {
+      color: green;
+      padding-left: 5px;
+    }
+
+    #reject-icone i {
+      color: red;
+    }
+  }
+
+  #navbar-user-email {
+    padding: 3px 20px;
+    // color: #FFF;
+  }
+}
+.logo {
+  float: left;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+  height: 50px;
+  margin-left: -15px;
+  color: #FFF;
+}
+@media (max-width: 760px) {
+  .logo {
+    margin-left: 15px;
+  }
+}
+.dropdown-menu {
+  min-width: 200px !important;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  background: #FFF !important;
+  color: #7647c4 !important;
+}
+.main-input-container {
+  background: #fff;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 15px 10px 0px 10px;
+  margin-bottom: 20px;
+  .main-input-photo-video {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CCC;
+  }
+  textarea {
+    margin-top: 5px;
+    border: none;
+    width: 100%;
+  }
+  .main-input-share-btn {
+    margin-top: 5px;
+    padding: 5px;
+    border-top: 1px solid #CCC;
+    text-align: right;
+  }
+}
+.col-second {
+  padding-right: 0;
+}
+/* COMMENT */
+.comment-container {
+  width: 100%;
+  p.link {
+    float: right;
+    font-size: 12px;
+    color: #7647c4;
+  }
+}
+.comment-container span:hover {
+text-decoration: underline;
+}
+.create-comment-container {
+margin-top: 15px;
+border-top: 1px solid #CCC;
+border-bottom: 1px solid #CCC;
+padding-top: 5px;
+  * {
+    display: inline-block;
+  }
+  textarea {
+    border: none;
+    width: 80%;
+  }
+  button {
+    vertical-align: top;
+    margin-top: 5px;
+  }
+}
+.comment-list {
+display: none;
+max-height: 125px;
+overflow-y: scroll;
+}
+.comment-block {
+padding: 5px 10px;
+}
+/* BASE CLASS */
+.display-inlineblock {
+  display: inline-block;
+}
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.clear {
+  clear: both;
+}
+.true-lies {
+  font-family: 'TrueLies';
+  font-weight: 300;
+}
+
+/* --------------------- */
+/* -     FOOTER        - */
+/* --------------------- */
+.wrapper {
+  min-height: 100%;
+}
+
+.main {
+  overflow: auto;
+  padding-bottom: 110px; /* must be same height as the footer */
+}
+
+.footer {
+  position: relative;
+  margin-top: -110px; /* negative value of footer height */
+  height: 50px;
+  color: #7647c4;
+  padding: 1rem;
+  text-align: center;
+  clear: both;
+}
+/////
+.messages-list {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.message-sent {
+  position: relative;
+  background-color: #D9EDF7;
+  border-color: #BCE8F1;
+  margin: 5px 20px;
+  padding: 10px;
+  float: right;
+}
+.message-received {
+  background-color: #F1F0F0;
+  border-color: #EEEEEE;
+  margin: 5px 20px;
+  padding: 10px;
+  float: left;
+}
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.inputfile + label {
+    max-width: 80%;
+    font-size: 1.25rem;
+    /* 20px */
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 5px 10px;
+    /* 10px 20px */
+}
+
+.no-js .inputfile + label {
+    display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+    /* pointer-events: none; */
+    /* in case of FastClick lib use */
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    /* 4px */
+    margin-right: 0.25em;
+    /* 4px */
+}
+.inputfile-2 + label {
+    color: #32c5d2;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-weight: normal;
+}
+
+.inputfile-2:focus + label,
+.inputfile-2.has-focus + label,
+.inputfile-2 + label:hover {
+    color: #32c5d2;
+}
+.event-header {
+  background: #FFF;
+  border: 1px solid #CCC;
+  padding: 15px;
+}
+.owner-panel {
+  .btn-purple {
+    color: #7647c4;
+    border-color: #7647c4;
+    background-color: #FFF !important;
+    padding: 5px 10px;
+  }
+}
+.event-description {
+  .col-md-3 {
+    border: 1px solid #CCC;
+    height: 50px;
+    border-left: none;
+  }
+  .col-md-3:first-child {
+    border-left: none;
+  }
+  .col-md-3:last-child {
+    border-right: none;
+  }
+}
+.hr-divider-grey {
+  border-top: 1px solid #CCC;
+}
+.post-img {
+  margin-top: 15px;
+}
+.map-container {
+  padding-top: 30px;
+}
+// login
+.logo-login {
+  width: 400px;
+}
+.font-green {
+  color: #32c5d2;
+}
+// register
+.register-title {
+  font-size: 32px;
+}
+// notification
+.friendships-content {
+  color: #d4dadf;
+  padding: 16px 15px 18px;
+  border-bottom: 1px solid #607482!important;
+}
+.grid-content {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 10px 20px 10px;
+  border-radius: 4px;
+  background: #FFF;
+  h3 {
+    font-size: 16px;
+    color: #474747;
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.block-stats {
+  border-radius: 4px;
+  box-shadow: 5px 5px 15px 1px #7986cb;
+  text-align: center;
+}
+
+.canvas-stats {
+  border-radius: 4px;
+  padding-left: 15px;
+}
+.find-partner-btn {
+  margin-top: 20px;
+}
+.checkbox-group {
+  margin-left: 15px;
+}
+.achievement-content {
+  position: relative;
+  .action {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    z-index: 100;
+  }
+}
+
+.marker-partner {
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.notifs-actions {
+    padding-bottom: 20px;
+    padding-top: 10px;
+    border-bottom: solid 1px;
+}
+
+.notifs-actions > a {
+    margin: 30px;
+}

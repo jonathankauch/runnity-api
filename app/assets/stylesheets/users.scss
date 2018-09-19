@@ -1,0 +1,84 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.profil-container {
+  position: relative;
+  background: #fff;
+  border: 1px solid #CCC;
+  padding-left: 0;
+  padding-right: 0;
+  .cover-picture {
+    height: 450px;
+    width: 100%;
+    background: url('bg.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  @media (max-width:480px) {
+    .cover-picture {
+      height: 325px;
+    }
+  }
+  .profil-picture {
+    position: absolute;
+    left: 50px;
+    top: 280px;
+    img {
+      height: 200px;
+      border: 2px solid #fff;
+    }
+  }
+  @media (max-width:480px) {
+    .profil-picture {
+      position: absolute;
+      left: 50px;
+      top: 200px;
+      img {
+        height: 150px;
+      }
+    }
+  }
+  .profil-fullname {
+    margin-left: 10px;
+    vertical-align: 50px;
+    font-size: 18px;
+    color: #FFF;
+  }
+}
+/* POST CONTAINER */
+.post-container {
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #CCC;
+  margin-top: 10px;
+  .mini-profil-container {
+    img {
+      max-height: 50px;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    p {
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+  .post-content {
+    margin-top: 15px;
+  }
+}
+.profil-main-button {
+  font-size: 18px;
+  color: #CCC;
+  li {
+    margin: 10px;
+  }
+}
+@media (max-width:480px) {
+  .profil-main-button {
+    font-size: 14px;
+    li {
+      margin: 5px;
+    }
+  }
+}

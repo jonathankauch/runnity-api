@@ -1,0 +1,22 @@
+<%= render 'layouts/main_css' %>
+
+<!-- BEGIN PAGE TITLE -->
+<div class="page-head">
+  <div class="page-title">
+      <h1>Editerer un commentaire
+      </h1>
+  </div>
+</div>
+<!-- END PAGE TITLE -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-body">
+        <%= render 'form', comment: @comment %>
+
+        <%= link_to 'Afficher', @comment %> |
+        <%= link_to 'Retour', comments_path %>
+      </div>
+    </div>
+  </div>
+</div>
